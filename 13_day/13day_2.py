@@ -1,59 +1,39 @@
 from pop import Camera
 from pop.Pilot import Object_Follow
 from pop.Pilot import SerBot
-from pop.Pilot import IMU
-from pop.LiDAR import Rplidar
-import timeit
+from lidar import Lidar
+from playsound import playsound # 미디어 출력 패키지 >> pip install playsound
+import google_cloud_tts # google_cloud_tts.py 파일 
+import time
 
 of = None
 bot = None
 count = 0
 serbot_width = 0
 direction_count = 0
-imu = None
-lidar = None
-DETECT = 300
 
 def setup():
-    global bot, of, imu, lidar
+    global bot, of
 
     cam = Camera()
     of = Object_Follow(cam)
     bot = SerBot()
 
-    imu = IMU()
-    lidar = Rplidar()
-
-    lidar.connect()
-    lidar.startMotor()
+    serbot_width = 500
+    direction_count = 8
+    lidar = Lidar(serbot_width, direction_count)
+    current_direction = 0
+    flag = True
 
     of.load_model()
     print("="*50)
     print("모델 로딩이 완료되었습니다.")
     print("10초 후 작동이 시작됩니다.")
-
-def destroy():
-    bot.stop()
-    lidar.stopMotor()
-
-def forward_detect(point_frame, dest):
-    for p in point_frame:
-        if p[0] > (360-30) or p[0] < (0+30):
-            if p[1] <= dest:
-                return True
-        else:
-            return False
-
+    google_cloud_tts.google_tts("모델 로딩이 완료되었습니다. 10초 후 작동이 시작됩니다.", "./audio/output1.mp3")
+    playsound('./auio/output1.mp3')
+    
 def loop():
     global count
-
-    point_frame = lidar.getVectors()
-    detect = forward_detect(point_frame, DETECT)
-    yaw = tuple(imu.getGyro().values())[2]
-    print(yaw, detect)
-    if(detect):
-        bot.stop()
-
     person = of.detect(index='person')
     if person :
         count = 0
@@ -76,6 +56,8 @@ def loop():
         if count > 40 :
             bot.stop()
             print("사람을 찾을 수 없습니다.")
+            google_cloud_tts.google_tts("사람을 찾을 수 없습니다.")
+            playsound('./auio/output1.mp3')
         elif count == 20:
             bot.setSpeed(50)
             if bot.steering < 0:
@@ -86,7 +68,6 @@ def loop():
         else: 
             count += 1
 
-
 def main():
     setup()
     while True:
@@ -95,7 +76,7 @@ def main():
         except KeyboardInterrupt:
             break
     
-    destroy()
+    bot.stop()
 
 if __name__ == '__main__':
     main()
