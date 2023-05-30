@@ -1,0 +1,33 @@
+"""
+#Container
+##sequence : 순서대로 저장 (순서기반)
+l = [1, 2, 2, 3, 4, 3] #list
+t = (1, 2, 2, 3, 4, 3) #tuple
+##none-sequence : 순서가 없음
+s = {1, 2, 2, 3, 4, 3} #set
+d = {1:"h1", "banana":3.14} #dictionary
+
+print(l, t, s, d)
+
+
+l = []
+l.append([1])
+l.append([2])
+l.append([3])
+print(l)
+
+d = {'x':[], 'y':[]}
+
+d['x'].append([1])
+d['y'].append([0.1])
+d['x'].append([2])
+d['y'].append([0.2])
+
+print(d['x'], d['y'])
+
+a =2 
+out = [[3]]
+
+a = a * out[0][0]
+print(a)
+"""

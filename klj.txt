@@ -1,0 +1,31 @@
+** github **
+https://github.com/PlanXStudio/meister/blob/main/bssm/
+
+** import Lib **
+from pop.Pilot import Serbot
+from pop.Pilot import    IMU
+from pop.LiDAR import Rplidar
+
+** Serbot Lib **
+bot = Serbot()
+bot.setSpeed()              // 속도 설정
+bot.getSpeed()              // 속도 받아오기
+bot.turnLeft()              // 왼쪽으로 틀기
+bot.turnRight()             // 오른쪽으로 틀기
+bot.forward()               // 앞으로
+bot.backward()              // 뒤로
+bot.stop()                  // 멈춤
+bot.move()                  // 각과 속도를 함께 조절 가능
+steering                    // 변수처럼 쓰임
+
+** IMU Lib **
+imu = IMU()
+imu.getAccel()              // 가속도
+imu.getGyzro()              // 각속도
+
+** Rplidar Lib **
+lidar = Rplidar()
+lidar.connect()             // 연결
+lidar.startMotor()          // 시작
+lidar.stopMotor()           // 정지 
+lidar.getVectors()          //
